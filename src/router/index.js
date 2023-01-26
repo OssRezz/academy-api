@@ -5,6 +5,8 @@ import UsuariosCreate from "../views/Users/UsuariosCreate.vue";
 import Estudiantes from "../views/Estudiantes/Estudiantes.vue";
 import Profesores from "../views/Profesores/Profesores.vue";
 import Asignaturas from "../views/Asignaturas/Asignaturas.vue";
+import Matriculas from "../views/Matriculas/Matriculas.vue";
+import Clases from "../views/Clases/Clases.vue";
 import AsignaturasView from "../views/Asignaturas/AsignaturasView.vue";
 import ProfesoresView from "../views/Profesores/ProfesoresView.vue";
 import EstudiantesView from "../views/Estudiantes/EstudiantesView.vue";
@@ -30,11 +32,14 @@ const routes = [
       { path: "/estudiantes/create", name: "EstudiantesCreate", component: EstudiantesView },
       { path: "/estudiantes/update", name: "EstudiantesUpdate", component: EstudiantesView },
       { path: "/profesores", name: "Profesores", component: Profesores },
+      { path: "/profesores/:id", name: "ProfesoresView", component: ProfesoresView },
       { path: "/profesores/create", name: "ProfesoresCreate", component: ProfesoresView },
       { path: "/profesores/update", name: "ProfesoresUpdate", component: ProfesoresView },
       { path: "/asignaturas", name: "Asignaturas", component: Asignaturas },
       { path: "/asignaturas/create", name: "AsignaturasCreate", component: AsignaturasView },
       { path: "/asignaturas/update", name: "AsignaturasUpdate", component: AsignaturasView },
+      { path: "/matriculas", name: "Matriculas", component: Matriculas },
+      { path: "/clases", name: "Clases", component: Clases },
       { path: "/semestres", name: "Semestres", component: Semestres },
     ],
   },

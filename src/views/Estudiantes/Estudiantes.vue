@@ -13,7 +13,12 @@ export default { name: "Estudiantes" }
                 </router-link>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-5" v-if="estudiantesLoading">
+            <div class="col-12 text-center">
+                <div class="text-primary h3">Loading...</div>
+            </div>
+        </div>
+        <div class="row" v-else>
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header  fs-5" style="font-weight: 500;">
@@ -55,7 +60,8 @@ export default { name: "Estudiantes" }
                                         </td>
                                         <td class="text-center">
                                             <router-link class=" btn btn-danger btn-sm"
-                                                :to="{ name: 'EstudiantesUpdate', params: { id: estudiante.id } }">Editar</router-link>
+                                                :to="{ name: 'EstudiantesUpdate', params: { id: estudiante.id } }">Editar
+                                            </router-link>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -73,8 +79,14 @@ export default { name: "Estudiantes" }
 import store from '../../store';
 import { computed } from 'vue';
 
+// const estudiantes = [];
+const estudiantes = computed(() => store.state.estudiantes.data);
+const estudiantesLoading = computed(() =>
+    store.state.estudiantes.loading
+)
 
-const estudiantes = computed(() => store.state.estudiantes);
+store.dispatch('getEstudiantes')
+
 </script>
 
 

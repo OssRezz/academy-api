@@ -12,15 +12,37 @@ export default { name: "EstudiantesView" }
                 </router-link>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-5" v-if="estudianteLoading">
+            <div class="col-12  col-lg-7 text-center">
+                <div class="text-primary h3">Loading...</div>
+            </div>
+        </div>
+        <div class="row" v-else>
             <div class="col-12  col-lg-7">
                 <div class="card shadow-sm">
                     <div class="card-header  fs-5" style="font-weight: 500;">
-                        {{ model.id ? 'Actualizar' : 'Crear' }} un estudiante
+                        {{ route.params.id ? 'Actualizar' : 'Crear' }} estudiante
                     </div>
                     <div class="card-body">
-                        <pre>{{ model }}</pre>
                         <form @submit.prevent="saveEstudiante">
+                            <div class="row  d-flex justify-content-center">
+                                <div class="col-12 px-4 text-white  rounded mb-3" v-if="errorMsg.estado">
+                                    <div :class="[errorMsg.color, 'row d-flex align-items-center p-2 rounded']">
+                                        <div class="col-10 fs-6">
+                                            <small>{{ errorMsg.msg }}</small>
+                                        </div>
+                                        <div class="col-2 text-end">
+                                            <span @click="errorMsg.estado = false" style="cursor: pointer;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" height="30">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-floating">
@@ -91,7 +113,9 @@ export default { name: "EstudiantesView" }
 
                                 <div class="col-12">
                                     <div class="d-grid">
-                                        <button class="btn btn-danger">Ingresar estudiante</button>
+                                        <button class="btn btn-danger">
+                                            {{ route.params.id ? 'Actualizar' : 'Crear' }} estudiante
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -105,14 +129,17 @@ export default { name: "EstudiantesView" }
 
 <script setup>
 import store from '../../store';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
+const estudianteLoading = computed(() =>
+    store.state.currentEstudiante.loading
+)
 
 let model = ref({
-    id: false,
+    id: "",
     documento: "",
     nombres: "",
     apellidos: "",
@@ -123,6 +150,13 @@ let model = ref({
     departamento: "",
     estado: "1",
 });
+
+let errorMsg = ref({
+    msg: "",
+    color: "",
+    estado: false,
+});
+
 
 watch(
     () => store.state.currentEstudiante.data,
@@ -137,14 +171,28 @@ watch(
 if (route.params.id) {
     store.dispatch('getEstudiante', route.params.id);
 }
+
+// store.dispatch('getEstudiantes')
+
 function saveEstudiante() {
     store.dispatch("saveEstudiante", model.value).then((res) => {
         console.log(res)
-        if (res.status !== 404) {
+        if (res.status === 200) {
             router.push({
                 name: "EstudiantesView",
-                params: { id: res.data[0].id }
+                params: { id: res.data.id }
             })
+            errorMsg.value = {
+                msg: res.message,
+                color: "bg-success",
+                estado: true,
+            }
+        } else {
+            errorMsg.value = {
+                msg: res.message,
+                color: "bg-primary",
+                estado: true,
+            }
         }
     })
 }

@@ -5,14 +5,13 @@ export default { name: "Asignaturas" }
 
 <template>
     <div class="container my-4">
-        <div class="row d-flex align-items-center mb-4">
-            <div class="col">
-                <a class="btn btn-danger shadow-sm">
-                    <i class="fas fa-plus-square"></i> Crear usuario
-                </a>
+
+        <div class="row my-5" v-if="asignaturasLoading">
+            <div class="col-12 text-center">
+                <div class="text-primary h3">Loading...</div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-else>
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header  fs-5" style="font-weight: 500;">
@@ -27,7 +26,6 @@ export default { name: "Asignaturas" }
                                         <th class="text-start">Area</th>
                                         <th class="text-start">Tipo asignatura</th>
                                         <th class="text-end">Creditos</th>
-                                        <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,9 +41,6 @@ export default { name: "Asignaturas" }
                                         </td>
                                         <td class="text-end">
                                             {{ asignatura.creditos }}
-                                        </td>
-                                        <td class="text-center">
-                                            <button class=" btn btn-danger btn-sm">Editar</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -64,7 +59,12 @@ import store from '../../store';
 import { computed } from 'vue';
 
 
-const asignaturas = computed(() => store.state.asignaturas);
+const asignaturas = computed(() => store.state.asignaturas.data);
+const asignaturasLoading = computed(() =>
+    store.state.asignaturas.loading
+)
+store.dispatch('getAsignaturas')
+
 </script>
 
 

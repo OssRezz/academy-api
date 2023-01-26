@@ -8,12 +8,17 @@ export default { name: "Profesores" }
     <div class="container my-4">
         <div class="row d-flex align-items-center mb-4">
             <div class="col">
-                <a class="btn btn-danger shadow-sm">
-                    <i class="fas fa-plus-square"></i> Crear usuario
-                </a>
+                <router-link class="btn btn-danger shadow-sm" :to="{ name: 'ProfesoresCreate' }">
+                    <i class="fas fa-plus-square"></i> Crear profesor
+                </router-link>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-5" v-if="profesoresLoading">
+            <div class="col-12 text-center">
+                <div class="text-primary h3">Loading...</div>
+            </div>
+        </div>
+        <div class="row" v-else>
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header  fs-5" style="font-weight: 500;">
@@ -54,7 +59,9 @@ export default { name: "Profesores" }
                                             {{ profesor.departamento + ' ' + profesor.ciudad }}
                                         </td>
                                         <td class="text-center">
-                                            <button class=" btn btn-danger btn-sm">Editar</button>
+                                            <router-link class=" btn btn-danger btn-sm"
+                                                :to="{ name: 'ProfesoresUpdate', params: { id: profesor.id } }">Editar
+                                            </router-link>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -73,7 +80,12 @@ import store from '../../store';
 import { computed } from 'vue';
 
 
-const profesores = computed(() => store.state.profesores);
+const profesores = computed(() => store.state.profesores.data);
+const profesoresLoading = computed(() =>
+    store.state.profesores.loading
+)
+store.dispatch('getProfesores')
+
 </script>
 
 

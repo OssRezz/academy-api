@@ -12,7 +12,12 @@ export default { name: "Usuarios" }
                 </router-link>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-5" v-if="usuariosLoading">
+            <div class="col-12 text-center">
+                <div class="text-primary h3">Loading...</div>
+            </div>
+        </div>
+        <div class="row" v-else>
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header  fs-5" style="font-weight: 500;">
@@ -47,8 +52,12 @@ export default { name: "Usuarios" }
 
 <script setup>
 import store from '../../store';
-import { computed, ref } from 'vue';
-const usuarios = computed(() => store.state.usuarios);
+import { computed } from 'vue';
+const usuarios = computed(() => store.state.usuarios.data);
+const usuariosLoading = computed(() =>
+    store.state.usuarios.loading
+)
+store.dispatch('getUsuarios')
 
 </script>
 
