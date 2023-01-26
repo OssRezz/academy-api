@@ -6,8 +6,7 @@
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-12 text-center">
-                                <img :src="'./src/assets/images/logo.png'" height="150">
-
+                                <img src="https://www.galaxiaseguridadltda.com.co/psicolacademy/public/images/logo.png" height="150">
                             </div>
                             <div class="col-12 text-center">
                                 <div class="fs-4" style="font-weight: 600;">PsicolAcademy</div>

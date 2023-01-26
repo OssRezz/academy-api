@@ -22,7 +22,7 @@ const routes = [
     path: "/",
     redirect: "/dashboard",
     component: DefaultLayout,
-    meta: { requiresAtuh: true },
+    meta: { requiresAuth: true },
     children: [
       { path: "/dashboard", name: "Dashboard", component: Dashboard },
       { path: "/usuarios", name: "Usuarios", component: Usuarios },
@@ -60,7 +60,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAtuh && !store.state.user.token) {
+  if (to.meta.requiresAuth && !store.state.user.token) {
     next({ name: "Login" });
   } else if (store.state.user.token && to.meta.isGuest) {
     next({ name: "Dashboard" });

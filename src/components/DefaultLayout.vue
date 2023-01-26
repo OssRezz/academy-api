@@ -46,7 +46,8 @@ export default {
             <a class="navbar-brand fs-5 text-primary" href="#"><b>PsicolAcademy</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <img :src="'./src/assets/icons/bars-solid.svg'" height="25">
+                <img src="https://www.galaxiaseguridadltda.com.co/psicolacademy/public/images/bars-solid.svg"
+                    height="25">
             </button>
             <div class="collapse navbar-collapse d-xl-flex justify-content-xl-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
