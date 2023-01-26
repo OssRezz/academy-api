@@ -141,7 +141,7 @@ function SaveUser() {
         } else {
             errorMsg.value = {
                 msg: res.message,
-                color: "bg-info",
+                color: "bg-primary",
                 estado: true,
             }
 
