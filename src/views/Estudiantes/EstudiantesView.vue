@@ -25,24 +25,6 @@ export default { name: "EstudiantesView" }
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="saveEstudiante">
-                            <div class="row  d-flex justify-content-center">
-                                <div class="col-12 px-4 text-white  rounded mb-3" v-if="errorMsg.estado">
-                                    <div :class="[errorMsg.color, 'row d-flex align-items-center p-2 rounded']">
-                                        <div class="col-10 fs-6">
-                                            <small>{{ errorMsg.msg }}</small>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                            <span @click="errorMsg.estado = false" style="cursor: pointer;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" height="30">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-floating">
@@ -131,6 +113,7 @@ export default { name: "EstudiantesView" }
 import store from '../../store';
 import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import Swal from 'sweetalert2'
 
 const route = useRoute();
 const router = useRouter();
@@ -151,12 +134,6 @@ let model = ref({
     estado: "1",
 });
 
-let errorMsg = ref({
-    msg: "",
-    color: "",
-    estado: false,
-});
-
 
 watch(
     () => store.state.currentEstudiante.data,
@@ -172,28 +149,33 @@ if (route.params.id) {
     store.dispatch('getEstudiante', route.params.id);
 }
 
-// store.dispatch('getEstudiantes')
 
 function saveEstudiante() {
     store.dispatch("saveEstudiante", model.value).then((res) => {
         console.log(res)
-        if (res.status === 200) {
-            router.push({
-                name: "EstudiantesView",
-                params: { id: res.data.id }
-            })
-            errorMsg.value = {
-                msg: res.message,
-                color: "bg-success",
-                estado: true,
-            }
-        } else {
-            errorMsg.value = {
-                msg: res.message,
-                color: "bg-primary",
-                estado: true,
-            }
+        if (res.status !== 200 || res.status === undefined) {
+            let html = "";
+            Object.values(res.data).forEach(error => {
+                html += `<li class="list-group-item"><small>${error}</small></li>`;
+
+            });
+            return Swal.fire({
+                title: res.message,
+                html: `<ul class="list-group list-group-flush">${html}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: 'rgb(223, 71, 89)',
+            });
         }
+        router.push({
+            name: "EstudiantesView",
+            params: { id: res.data.id }
+        });
+        return Swal.fire({
+            title: res.message,
+            text: `${res.data.nombres} ${res.data.apellidos}`,
+            icon: 'success',
+            confirmButtonColor: 'rgb(223, 71, 89)',
+        });
     })
 }
 </script>

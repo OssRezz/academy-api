@@ -5,6 +5,13 @@ export default { name: "Clases" }
 
 <template>
     <div class="container my-4">
+        <div class="row d-flex align-items-center mb-4">
+            <div class="col">
+                <router-link class="btn btn-danger shadow-sm" :to="{ name: 'ClasesCreate' }">
+                    <i class="fas fa-plus-square"></i> Crear clase
+                </router-link>
+            </div>
+        </div>
         <div class="row my-5" v-if="clasesLoading">
             <div class="col-12 text-center">
                 <div class="text-primary h3">Loading...</div>
@@ -28,6 +35,7 @@ export default { name: "Clases" }
                                         <th class="text-center">Hora Fin</th>
                                         <th class="text-center">Tipo Asignatura</th>
                                         <th class="text-center">Estado</th>
+                                        <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,10 +55,14 @@ export default { name: "Clases" }
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <div
-                                                :class="['badge', clase.estado == 1 ? 'bg-success' : 'bg-primary']">
+                                            <div :class="['badge', clase.estado == 1 ? 'bg-success' : 'bg-primary']">
                                                 {{ clase.estado == 1 ? 'En proceso' : 'Finalizado' }}
                                             </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <router-link class=" btn btn-danger btn-sm"
+                                                :to="{ name: 'ClasesUpdate', params: { id: clase.id } }">Editar
+                                            </router-link>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -5,7 +5,13 @@ export default { name: "Asignaturas" }
 
 <template>
     <div class="container my-4">
-
+        <div class="row d-flex align-items-center mb-4">
+            <div class="col">
+                <router-link class="btn btn-danger shadow-sm" :to="{ name: 'AsignaturasCreate' }">
+                    <i class="fas fa-plus-square"></i> Crear Asignatura
+                </router-link>
+            </div>
+        </div>
         <div class="row my-5" v-if="asignaturasLoading">
             <div class="col-12 text-center">
                 <div class="text-primary h3">Loading...</div>
@@ -26,6 +32,7 @@ export default { name: "Asignaturas" }
                                         <th class="text-start">Area</th>
                                         <th class="text-start">Tipo asignatura</th>
                                         <th class="text-end">Creditos</th>
+                                        <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,6 +48,11 @@ export default { name: "Asignaturas" }
                                         </td>
                                         <td class="text-end">
                                             {{ asignatura.creditos }}
+                                        </td>
+                                        <td class="text-center">
+                                            <router-link class=" btn btn-danger btn-sm"
+                                                :to="{ name: 'AsignaturasUpdate', params: { id: asignatura.id } }">Editar
+                                            </router-link>
                                         </td>
                                     </tr>
                                 </tbody>

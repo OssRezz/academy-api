@@ -5,6 +5,13 @@ export default { name: "Matriculas" }
 
 <template>
     <div class="container my-4">
+        <div class="row d-flex align-items-center mb-4">
+            <div class="col">
+                <router-link class="btn btn-danger shadow-sm" :to="{ name: 'MatriculasCreate' }">
+                    <i class="fas fa-plus-square"></i> Crear Matricula
+                </router-link>
+            </div>
+        </div>
         <div class="row my-5" v-if="matriculasLoading">
             <div class="col-12 text-center">
                 <div class="text-primary h3">Loading...</div>

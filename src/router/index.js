@@ -6,7 +6,9 @@ import Estudiantes from "../views/Estudiantes/Estudiantes.vue";
 import Profesores from "../views/Profesores/Profesores.vue";
 import Asignaturas from "../views/Asignaturas/Asignaturas.vue";
 import Matriculas from "../views/Matriculas/Matriculas.vue";
+import MatriculasView from "../views/Matriculas/MatriculasView.vue";
 import Clases from "../views/Clases/Clases.vue";
+import ClasesView from "../views/Clases/ClasesView.vue";
 import AsignaturasView from "../views/Asignaturas/AsignaturasView.vue";
 import ProfesoresView from "../views/Profesores/ProfesoresView.vue";
 import EstudiantesView from "../views/Estudiantes/EstudiantesView.vue";
@@ -36,10 +38,19 @@ const routes = [
       { path: "/profesores/create", name: "ProfesoresCreate", component: ProfesoresView },
       { path: "/profesores/update", name: "ProfesoresUpdate", component: ProfesoresView },
       { path: "/asignaturas", name: "Asignaturas", component: Asignaturas },
+      { path: "/asignaturas/:id", name: "AsignaturasView", component: AsignaturasView },
       { path: "/asignaturas/create", name: "AsignaturasCreate", component: AsignaturasView },
       { path: "/asignaturas/update", name: "AsignaturasUpdate", component: AsignaturasView },
       { path: "/matriculas", name: "Matriculas", component: Matriculas },
+      { path: "/matriculas/:id", name: "MatriculasView", component: MatriculasView },
+      { path: "/matriculas/create", name: "MatriculasCreate", component: MatriculasView },
+      { path: "/matriculas/update", name: "MatriculasUpdate", component: MatriculasView },
+
       { path: "/clases", name: "Clases", component: Clases },
+      { path: "/clases/:id", name: "ClasesView", component: ClasesView },
+      { path: "/clases/create", name: "ClasesCreate", component: ClasesView },
+      { path: "/clases/update", name: "ClasesUpdate", component: ClasesView },
+
       { path: "/semestres", name: "Semestres", component: Semestres },
     ],
   },

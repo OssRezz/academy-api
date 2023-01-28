@@ -1,6 +1,5 @@
 <script>
 export default { name: "UsuariosCreate" }
-
 </script>
 
 <template>
@@ -20,24 +19,6 @@ export default { name: "UsuariosCreate" }
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="SaveUser">
-                            <div class="row  d-flex justify-content-center">
-                                <div class="col-12 px-4 text-white  rounded mb-3" v-if="errorMsg.estado">
-                                    <div :class="[errorMsg.color, 'row d-flex align-items-center p-2 rounded']">
-                                        <div class="col-10 fs-6">
-                                            <small>{{ errorMsg.msg }}</small>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                            <span @click="errorMsg.estado = false" style="cursor: pointer;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" height="30">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-floating">
@@ -64,8 +45,8 @@ export default { name: "UsuariosCreate" }
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <select name="rol_id" class="form-select" v-model="model.rol_id"
-                                            @change="rolChange" placeholder="roles">
+                                        <select name="rol_id" class="form-select" placeholder="roles"
+                                            v-model="model.rol_id">
                                             <option disabled selected>Selecciona un rol</option>
                                             <option v-for="rol in roles" :key="rol.id" :value="rol.id">
                                                 {{ rol.nombre }}
@@ -91,13 +72,14 @@ export default { name: "UsuariosCreate" }
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import store from '../../store';
 import { computed, ref } from 'vue';
+import Swal from 'sweetalert2'
 
+store.dispatch('getRoles')
 const roles = computed(() => store.state.roles);
 const route = useRoute();
-const router = useRouter();
 
 let model = ref({
     name: "",
@@ -105,16 +87,6 @@ let model = ref({
     password: "",
     rol_id: "",
 });
-
-
-
-let errorMsg = ref({
-    msg: "",
-    color: "",
-    estado: false,
-});
-
-const modelRoles = computed(() => store.state.roles);
 
 
 if (route.params.id) {
@@ -125,32 +97,34 @@ if (route.params.id) {
 
 function SaveUser() {
     store.dispatch("saveUser", model.value).then((res) => {
-        console.log(res)
-        if (res.status === 200) {
-            model.value = {
-                name: "",
-                email: "",
-                password: "",
-                rol_id: "",
-            }
-            errorMsg.value = {
-                msg: res.message,
-                color: "bg-success",
-                estado: true,
-            }
-        } else {
-            errorMsg.value = {
-                msg: res.message,
-                color: "bg-primary",
-                estado: true,
-            }
 
+        if (res.status !== 200) {
+            let html = "";
+            Object.values(res.data).forEach(error => {
+                html += `<li class="list-group-item"><small>${error}</small></li>`;
+
+            });
+            return Swal.fire({
+                title: res.message,
+                html: `<ul class="list-group list-group-flush">${html}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: 'rgb(223, 71, 89)',
+            });
         }
+        model.value = {
+            name: "",
+            email: "",
+            password: "",
+            rol_id: "",
+        }
+        return Swal.fire({
+            title: res.message,
+            text: `${res.data.name}`,
+            icon: 'success',
+            confirmButtonColor: 'rgb(223, 71, 89)',
+        });
     })
 }
-
-store.dispatch('getRoles')
-
 </script>
 
 

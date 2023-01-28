@@ -15,6 +15,18 @@ const store = createStore({
       loading: false,
       data: {},
     },
+    currentAsignatura: {
+      loading: false,
+      data: {},
+    },
+    currentMatricula: {
+      loading: false,
+      data: {},
+    },
+    currentClase: {
+      loading: false,
+      data: {},
+    },
     estudiantes: {
       loading: false,
       data: [],
@@ -40,9 +52,75 @@ const store = createStore({
       data: [],
     },
     roles: [],
+    areas: [],
   },
   getters: {},
   actions: {
+    //Una clase
+    getClase({ commit }, id) {
+      commit("setCurrentClaseLoading", true);
+
+      return axiosClient
+        .get(`/clases/${id}`)
+        .then((res) => {
+          commit("setCurrentClase", res.data.data);
+          commit("setCurrentClaseLoading", false);
+          console.log("Clase obtenido por un id...");
+          return res;
+        })
+        .catch((error) => {
+          commit("setCurrentClaseLoading", false);
+          throw error;
+        });
+    },
+    //Craer, editar clases
+    saveClase({ commit }, clase) {
+      let response;
+      //Si el id es true significa que vamos actualizar el profesor
+      if (clase.id) {
+        response = axiosClient
+          .put(`/clases/${clase.id}`, clase)
+          .then((res) => {
+            commit("setCurrentClase", res.data.data);
+            console.log("Clase editado...");
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      } else {
+        response = axiosClient
+          .post(`/clases`, clase)
+          .then((res) => {
+            if (res.data.status === 200) {
+              commit("setCurrentClase", res.data.data);
+              console.log("Clase creada...");
+            }
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+      return response;
+    },
+    //Una asignatura
+    getAsignatura({ commit }, id) {
+      commit("setCurrentAsignaturaLoading", true);
+
+      return axiosClient
+        .get(`/asignaturas/${id}`)
+        .then((res) => {
+          commit("setCurrentAsignatura", res.data.data);
+          commit("setCurrentAsignaturaLoading", false);
+          console.log("Asignatura obtenido por un id...");
+          return res;
+        })
+        .catch((error) => {
+          commit("setCurrentAsignaturaLoading", false);
+          throw error;
+        });
+    },
     //Un estudiante
     getEstudiante({ commit }, id) {
       commit("setCurrentEstudianteLoading", true);
@@ -99,6 +177,54 @@ const store = createStore({
             if (res.data.status === 200) {
               commit("setCurrentEstudiante", res.data.data);
               console.log("Estudiante creado...");
+            }
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+      return response;
+    },
+    //Un Matricula
+    getMatricula({ commit }, id) {
+      commit("setCurrentMatriculaLoading", true);
+
+      return axiosClient
+        .get(`/matriculas/${id}`)
+        .then((res) => {
+          commit("setCurrentMatricula", res.data.data);
+          commit("setCurrentMatriculaLoading", false);
+          console.log("Matricula obtenido por un id...");
+          return res;
+        })
+        .catch((error) => {
+          commit("setCurrentMatriculaLoading", false);
+          throw error;
+        });
+    },
+    //Craer, editar estudiante
+    saveMatricula({ commit }, matricula) {
+      let response;
+      //Si el id es true significa que vamos actualizar el Matricula
+      if (matricula.id) {
+        response = axiosClient
+          .put(`/matriculas/${matricula.id}`, matricula)
+          .then((res) => {
+            commit("setCurrentMatricula", res.data.data);
+            console.log("Matricula editado...");
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      } else {
+        response = axiosClient
+          .post(`/matriculas`, matricula)
+          .then((res) => {
+            if (res.data.status === 200) {
+              commit("setCurrentMatricula", res.data.data);
+              console.log("Matricula creada...");
             }
             return res.data;
           })
@@ -173,6 +299,37 @@ const store = createStore({
       }
       return response;
     },
+    //Craer, editar profesores
+    saveAsignatura({ commit }, asignatura) {
+      let response;
+      //Si el id es true significa que vamos actualizar el profesor
+      if (asignatura.id) {
+        response = axiosClient
+          .put(`/asignaturas/${asignatura.id}`, asignatura)
+          .then((res) => {
+            commit("setCurrentAsignatura", res.data.data);
+            console.log("asignatura editado...");
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      } else {
+        response = axiosClient
+          .post(`/asignaturas`, asignatura)
+          .then((res) => {
+            if (res.data.status === 200) {
+              commit("setCurrentAsignatura", res.data.data);
+              console.log("asignatura creado...");
+            }
+            return res.data;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+      return response;
+    },
     //todos los Asignaturas
     getAsignaturas({ commit }) {
       commit("setAsignaturasLoading", true);
@@ -197,6 +354,19 @@ const store = createStore({
         .then((res) => {
           commit("setRoles", res.data.data);
           console.log("Todos los Roles...");
+          return res.data;
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+    //areas
+    getAreas({ commit }) {
+      return axiosClient
+        .get(`/areas`)
+        .then((res) => {
+          commit("setAreas", res.data.data);
+          console.log("Todos los Areas...");
           return res.data;
         })
         .catch((error) => {
@@ -246,7 +416,6 @@ const store = createStore({
           commit("setClasesLoading", false);
           commit("setClases", res.data.data);
           console.log("Todos los Clases...");
-          console.log(res.data.data);
           return res.data;
         })
         .catch((error) => {
@@ -261,7 +430,6 @@ const store = createStore({
           if (res.data.status === 200) {
             console.log("usuarios creado...");
           }
-          console.log(res.data);
           return res.data;
         })
         .catch((error) => {
@@ -330,6 +498,24 @@ const store = createStore({
     setAsignaturas: (state, asignaturas) => {
       state.asignaturas.data = asignaturas;
     },
+    setCurrentMatriculaLoading: (state, loading) => {
+      state.currentMatricula.loading = loading;
+    },
+    setCurrentMatricula: (state, matricula) => {
+      state.currentMatricula.data = matricula;
+    },
+    setCurrentClaseLoading: (state, loading) => {
+      state.currentClase.loading = loading;
+    },
+    setCurrentClase: (state, clase) => {
+      state.currentClase.data = clase;
+    },
+    setCurrentAsignaturaLoading: (state, loading) => {
+      state.currentAsignatura.loading = loading;
+    },
+    setCurrentAsignatura: (state, asignatura) => {
+      state.currentAsignatura.data = asignatura;
+    },
     setMatriculasLoading: (state, loading) => {
       state.matriculas.loading = loading;
     },
@@ -344,6 +530,9 @@ const store = createStore({
     },
     setRoles: (state, roles) => {
       state.roles = roles;
+    },
+    setAreas: (state, areas) => {
+      state.areas = areas;
     },
     logout: (state) => {
       state.user.data = {};
