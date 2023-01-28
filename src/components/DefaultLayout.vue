@@ -60,7 +60,7 @@ export default {
                         {{ item.name }}
                     </router-link>
 
-                    <button as="a" @click="logout" class="btn btn-outline-danger border-0 btn-sm mx-1">
+                    <button as="a" @click="logout" class="btn btn-outline-danger border-0 btn-sm mx-1 text-start">
                         Salir <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>

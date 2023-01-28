@@ -30,8 +30,8 @@ export default { name: "Asignaturas" }
                                     <tr>
                                         <th class="text-start">Nombre</th>
                                         <th class="text-start">Area</th>
-                                        <th class="text-start">Tipo asignatura</th>
                                         <th class="text-end">Creditos</th>
+                                        <th class="text-center">Tipo asignatura</th>
                                         <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
@@ -43,14 +43,17 @@ export default { name: "Asignaturas" }
                                         <td class="text-start">
                                             {{ asignatura.area.nombre }}
                                         </td>
-                                        <td class="text-start">
-                                            {{ asignatura.tipo_asignatura == 1 ? 'Lectiva' : 'Obligatoria' }}
-                                        </td>
                                         <td class="text-end">
                                             {{ asignatura.creditos }}
                                         </td>
                                         <td class="text-center">
-                                            <router-link class=" btn btn-danger btn-sm"
+                                            <div
+                                                :class="['badge', asignatura.tipo_asignatura == 1 ? 'bg-info' : 'bg-secondary']">
+                                                {{ asignatura.tipo_asignatura == 1 ? 'Lectiva' : 'Obligatoria' }}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <router-link class=" btn btn-outline-danger border-0 btn-sm"
                                                 :to="{ name: 'AsignaturasUpdate', params: { id: asignatura.id } }">Editar
                                             </router-link>
                                         </td>

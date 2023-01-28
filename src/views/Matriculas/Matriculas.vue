@@ -33,6 +33,7 @@ export default { name: "Matriculas" }
                                         <th class="text-end">Semestre</th>
                                         <th class="text-center">Asignaturas</th>
                                         <th class="text-center">Estado</th>
+                                        <th class="text-center">Accion</th>
 
                                     </tr>
                                 </thead>
@@ -46,15 +47,20 @@ export default { name: "Matriculas" }
                                         <td class="text-end">{{ matricula.semestre }}</td>
                                         <td class="text-center">
                                             <div
-                                                :class="['badge', matricula.asignaturas == 1 ? 'bg-success' : 'bg-danger']">
+                                                :class="['badge', matricula.asignaturas == 1 ? 'bg-info' : 'bg-secondary']">
                                                 {{ matricula.asignaturas == 1 ? 'Completo' : 'Sin asignaturas' }}
                                             </div>
                                         </td>
                                         <td class="text-center">
                                             <div
-                                                :class="['badge', matricula.estado == 1 ? 'bg-success' : 'bg-primary']">
+                                                :class="['badge', matricula.estado == 1 ? 'bg-danger' : 'bg-success']">
                                                 {{ matricula.estado == 1 ? 'En proceso' : 'Finalizado' }}
                                             </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <router-link class="btn btn-outline-danger border-0 btn-sm"
+                                                :to="{ name: 'MatriculasUpdate', params: { id: matricula.id } }">Editar
+                                            </router-link>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -50,8 +50,8 @@ export default { name: "Clases" }
                                         <td class="text-center">{{ clase.hora_fin }}</td>
                                         <td class="text-center">
                                             <div
-                                                :class="['badge', clase.asignaturas == 1 ? 'bg-success' : 'bg-danger']">
-                                                {{ clase.asignaturas == 1 ? 'Completo' : 'Sin asignaturas' }}
+                                                :class="['badge', clase.asignatura.tipo_asignatura == 1 ? 'bg-info' : 'bg-secondary']">
+                                                {{ clase.asignatura.tipo_asignatura == 1 ? 'Lectiva' : 'Obligatoria' }}
                                             </div>
                                         </td>
                                         <td class="text-center">
@@ -60,7 +60,7 @@ export default { name: "Clases" }
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <router-link class=" btn btn-danger btn-sm"
+                                            <router-link class="btn btn-outline-danger border-0 btn-sm"
                                                 :to="{ name: 'ClasesUpdate', params: { id: clase.id } }">Editar
                                             </router-link>
                                         </td>

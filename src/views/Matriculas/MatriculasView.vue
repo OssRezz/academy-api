@@ -47,8 +47,16 @@ export default { name: "MatriculasView" }
                                     </div>
                                 </div>
 
-
-
+                                <div class="col-12" v-if="route.params.id">
+                                    <div class="form-floating">
+                                        <select name="rol_id" class="form-select" placeholder="roles"
+                                            v-model="model.estado">
+                                            <option value="0">Finalizado</option>
+                                            <option value="1">En proceso</option>
+                                        </select>
+                                        <label for="" class="form-label">Estado <b class="text-danger">*</b></label>
+                                    </div>
+                                </div>
 
                                 <div class="col-12">
                                     <div class="d-grid">
@@ -86,7 +94,7 @@ let model = ref({
     id: "",
     estudiante_id: "",
     semestre: "",
-    estado: "1",
+    estado: route.params.id ? '' : "1",
 });
 
 
@@ -107,7 +115,6 @@ if (route.params.id) {
 
 function saveMatricula() {
     store.dispatch("saveMatricula", model.value).then((res) => {
-        console.log(res)
         if (res.status !== 200 || res.status === undefined) {
             let html = "";
             Object.values(res.data).forEach(error => {

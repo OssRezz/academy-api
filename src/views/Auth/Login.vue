@@ -6,7 +6,8 @@
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-12 text-center">
-                                <img src="https://www.galaxiaseguridadltda.com.co/psicolacademy/public/images/logo.png" height="150">
+                                <img src="https://www.galaxiaseguridadltda.com.co/psicolacademy/public/images/logo.png"
+                                    height="150">
                             </div>
                             <div class="col-12 text-center">
                                 <div class="fs-4" style="font-weight: 600;">PsicolAcademy</div>
@@ -16,9 +17,6 @@
                             <div class="row g-4 d-flex justify-content-center">
                                 <div class="col-11 text-white bg-danger p-2 rounded" v-if="errorMsg">
                                     <div class="row d-flex align-items-center">
-                                        <div class="col-10">
-                                            <small>{{ errorMsg }}</small>
-                                        </div>
                                         <div class="col-2">
                                             <span @click="errorMsg = ''" style="cursor: pointer;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -33,14 +31,14 @@
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <input type="email" class="form-control" id="input-1" v-model="user.email"
-                                            placeholder="Enter email" required>
+                                            placeholder="Enter email">
                                         <label for="">Email</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <input type="password" class="form-control" id="input_password"
-                                            v-model="user.password" placeholder="Enter password" required>
+                                            v-model="user.password" placeholder="Enter password">
                                         <label for="">Password</label>
                                     </div>
                                 </div>
@@ -59,7 +57,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import store from '../../store';
-import { ref } from "vue";
+import Swal from 'sweetalert2'
 
 const router = useRouter();
 const user = {
@@ -67,21 +65,35 @@ const user = {
     password: "",
 }
 
-let errorMsg = ref("");
 
 function login(ev) {
     ev.preventDefault();
     store.dispatch('login', user)
         .then((res) => {
-            errorMsg.value = res.message
-            if (res.status === 200) {
-                res.usuario.rol_id !== 3 ?
-                    router.push({ name: "Dashboard" }) : router.push({ name: "Semestres" })
+            if (res.status !== 200) {
+                let html = "";
+                Object.values(res.errors).forEach(error => {
+                    html += `<li class="list-group-item"><small>${error}</small></li>`;
+
+                });
+                return Swal.fire({
+                    title: res.message,
+                    html: `<ul class="list-group list-group-flush">${html}</ul>`,
+                    icon: 'warning',
+                    confirmButtonColor: 'rgb(223, 71, 89)',
+                });
+
             }
+            res.usuario.rol_id !== 3 ?
+                router.push({ name: "Dashboard" }) : router.push({ name: "Semestres" })
         })
         .catch((error) => {
-            console.log(error.message.message)
-            errorMsg.value = error.message
+            return Swal.fire({
+                title: error.message,
+                html: `¡Ups! Parece que el servidor está teniendo un problema técnico. Por favor, inténtalo de nuevo más tarde.<br> ¡Lo solucionaremos lo antes posible!`,
+                icon: 'error',
+                confirmButtonColor: 'rgb(223, 71, 89)',
+            });
         })
 }
 </script>

@@ -59,7 +59,7 @@ export default { name: "Estudiantes" }
                                             {{ estudiante.departamento + ' ' + estudiante.ciudad }}
                                         </td>
                                         <td class="text-center">
-                                            <router-link class=" btn btn-danger btn-sm"
+                                            <router-link class=" btn btn-outline-danger border-0 btn-sm"
                                                 :to="{ name: 'EstudiantesUpdate', params: { id: estudiante.id } }">Editar
                                             </router-link>
                                         </td>
