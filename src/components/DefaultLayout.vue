@@ -9,9 +9,8 @@ const navigation = [
     { name: "Estudiantes", to: { name: "Estudiantes" } },
     { name: "Profesores", to: { name: "Profesores" } },
     { name: "Asignaturas", to: { name: "Asignaturas" } },
-    { name: "Matriculas", to: { name: "Matriculas" } },
     { name: "Clases", to: { name: "Clases" } },
-
+    { name: "Matriculas", to: { name: "Matriculas" } },
 ];
 
 
