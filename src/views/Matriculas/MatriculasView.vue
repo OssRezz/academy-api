@@ -251,6 +251,7 @@ let model = ref({
     estudiante_id: "",
     semestre: "",
     asignaturas: "",
+    creditos: "",
     estado: route.params.id ? '' : "1",
 });
 
@@ -287,6 +288,7 @@ function saveMatricula() {
 
     //Agregamos las asignaturas seleccionadas
     model.value.asignaturas = AsignaturasSeleccionadas.value
+    model.value.creditos = TotalCreditos
 
     store.dispatch("saveMatricula", model.value).then((res) => {
 
@@ -306,8 +308,8 @@ function saveMatricula() {
             });
         }
         router.push({
-            name: "MatriculasView",
-            params: { id: res.data.id }
+            name: "Matriculas",
+            // params: { id: res.data.id }
         });
         return Swal.fire({
             title: res.message,
